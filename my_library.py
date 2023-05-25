@@ -41,6 +41,10 @@ def metrics(list):
   F1 = 0 if Precision + Recall == 0 else (Precision * Recall) / (Precision + Recall)
   return {'Precision': Precision, 'Recall': Recall, 'F1': F1, 'Accuracy' : Accuracy}
 
+def generate_random(n):
+  random_weights = [round(uniform(-1, 1), 2) for i in range(n)]
+  return random_weights
+
 def testing():
-  return 'loaded!'
+  return f'loaded!'
 

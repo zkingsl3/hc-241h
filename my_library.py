@@ -31,15 +31,23 @@ def naive_bayes(table, evidence_row, target):
   neg, pos = compute_probs(prob_zero, prob_one)
   return[neg, pos]
 
-def metrics(list):
-  Accuracy = sum(p==a for p, a in list)/len(list)
-  tp = sum([1 if pair==[1,1] else 0 for pair in list])
-  fp = sum([1 if pair==[1,0] else 0 for pair in list])
-  fn = sum([1 if pair==[0,1] else 0 for pair in list])
+#new metrics function
+def metrics(parameter):
+  assert isinstance(parameter, list), f'Expected parameter to be of type list but is instead {type(parameter)}'
+  assert all(isinstance(value, list) for value in parameter), f'Your parameter is supposed to be a list of lists, but is not!'
+  assert all(len(value) == 2 for value in parameter), f'Your list is not zipped- please zip it.'
+  assert all(isinstance(value[0], int) and isinstance(value[1], int) for value in parameter), f'Each value in pair should be an integer'
+  assert all(value[0] >= 0 and value[1] >= 0 for value in parameter), f'Your values cannot be negative numbers'
+
+  Accuracy = sum(p==a for p, a in parameter)/len(parameter)
+  tp = sum([1 if pair==[1,1] else 0 for pair in parameter])
+  fp = sum([1 if pair==[1,0] else 0 for pair in parameter])
+  fn = sum([1 if pair==[0,1] else 0 for pair in parameter])
   Recall = 0 if (tp + fn) == 0 else tp / (tp + fn)
   Precision = 0 if (tp + fp) == 0 else tp / (tp + fp)
-  F1 = 0 if Precision + Recall == 0 else (Precision * Recall) / (Precision + Recall)
+  F1 = 0 if Precision + Recall == 0 else 2*(Precision * Recall) / (Precision + Recall)
   return {'Precision': Precision, 'Recall': Recall, 'F1': F1, 'Accuracy' : Accuracy}
+
 
 def generate_random(n):
   random_weights = [round(uniform(-1, 1), 2) for i in range(n)]

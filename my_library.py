@@ -75,7 +75,6 @@ def try_archs(full_table, target, architectures, thresholds):
   
 
 from sklearn.ensemble import RandomForestClassifier  #make sure this makes it into your library
-
 def run_random_forest(train, test, target, N):
   X = up_drop_column(train, target)
   y = up_get_column(train,target)  

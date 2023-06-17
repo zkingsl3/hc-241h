@@ -77,12 +77,11 @@ def try_archs(full_table, target, architectures, thresholds):
 from sklearn.ensemble import RandomForestClassifier  #make sure this makes it into your library
 def run_random_forest(train, test, target, N):
   X = up_drop_column(train, target)
-  y = up_get_column(train,target)  
-  k_feature_table = up_drop_column(test, target) 
-  k_actuals = up_get_column(test, target)  
-  clf = RandomForestClassifier(n_estimators=N, max_depth=2, random_state=0)  
+  y = up_get_column(train,target)
+  k_feature_table = up_drop_column(test, target)
+  k_actuals = up_get_column(test, target)
+  clf = RandomForestClassifier(n_estimators=N, max_depth=2, random_state=0)
   clf.fit(X, y)  #builds the trees as specified above
-
   probs = clf.predict_proba(k_feature_table)
   pos_probs = [p for n,p in probs]  #probs is list of [neg,pos] like we are used to seeing.
   pos_probs[:5]
@@ -93,6 +92,8 @@ def run_random_forest(train, test, target, N):
     mets = metrics(pred_act_list)
     mets['Threshold'] = t
     all_mets = all_mets + [mets]
+  metrics_table = up_metrics_table(all_mets)
+  print(metrics_table)
    
 def testing():
   return f'loaded!'
